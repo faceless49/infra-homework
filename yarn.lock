@@ -230,7 +230,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@kubernetes/client-node@npm:^1.0.0":
+"@kubernetes/client-node@npm:1.0.0":
   version: 1.0.0
   resolution: "@kubernetes/client-node@npm:1.0.0"
   dependencies:
@@ -2001,7 +2001,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "infra-homework@workspace:."
   dependencies:
-    "@kubernetes/client-node": "npm:^1.0.0"
+    "@kubernetes/client-node": "npm:1.0.0"
     "@types/eslint": "npm:9.6.1"
     "@types/node": "npm:22.10.1"
     "@yarnpkg/core": "npm:4.1.6"
