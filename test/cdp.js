@@ -4,7 +4,7 @@ const fs = require('node:fs');
 
 const express = require('express');
 const CDP = require('chrome-remote-interface');
-
+const { Runtime } = require('node:inspector');
 const app = express();
 const expected = 'Infrastructure';
 const template = fs.readFileSync(path.resolve(__dirname, '../index.html'), 'utf-8');
@@ -34,11 +34,20 @@ async function test() {
     await Page.enable();
 
     // Нужно перейти на localhost:3000, дождаться инициализации DOM и вызвать нужные команды
-    await Page.navigate({ url: '' });
+    await Page.navigate({ url: 'http://localhost:3000' });
     await Page.loadEventFired();
     await client.DOM.enable();
+    const rootJs = `(function() {
+      return document?.getElementById('root').innerHTML
+    }())`
+    // https://www.youtube.com/watch?feature=shared&v=z0TP-9QSdHI
+    const res = await client.Runtime.evaluate({
+      expression: rootJs,
+      awaitPromsie: true
+    })
+    console.log(res, 'res');
 
-    const result = '?';
+    const result = res.result.value;
 
     assert.equal(result, expected);
 
