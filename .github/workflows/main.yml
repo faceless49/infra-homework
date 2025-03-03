@@ -1,0 +1,64 @@
+name: dependencies
+on: [push]
+jobs:
+  # Dependencies installation
+  dependencies:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: yarn
+
+      - run: yarn install --immutable
+
+  # Build project
+  build:
+    needs: dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: yarn
+
+      - run: yarn install --immutable
+      - run: yarn build
+
+  # Run all linters
+  linters:
+    needs: dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: yarn
+
+      - run: yarn install --immutable
+      - run: yarn linters
+
+  # Deploy project
+  deploy:
+    needs: [dependencies, build]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: yarn
+
+      - run: yarn install --immutable
+      - run: yarn deploy
